@@ -2,10 +2,12 @@ import os
 import time
 import csv
 import networkx as nx
-
+import paho.mqtt.client as mqtt
+current_location=2
+facing_direction=0
 routeA,routeB=[],[]
 command=[]
-way,route,a,res,directionroute=[],[],[],[],[]
+way,route,a,res,directionroute,current_direction,empty_list,current_directionA,current_directionB=[],[],[],[],[],[],[],[],[]
 
 weighted_edges=[(6,7,3),(7,12,3),(7,8,5),(1,11,3),(2,26,3),
                 (3,35,5),(4,27,4),(5,17,3),(8,9,3),(9,14,3),(9,12,5),
@@ -32,16 +34,24 @@ with open('log.csv', 'w', newline='') as file:
 #################################################################################################################################################
     
 def directionPath(start, middle, end, botDirection,temp):
-
+    current_direction=empty_list
     G=nx.Graph()
     G.add_weighted_edges_from(weighted_edges)
     if temp==0:
-        route=(nx.shortest_path(G,start,middle))
+        if(start!=middle):
+            route=(nx.shortest_path(G,start,middle))
         #print(route)
+        else:
+            listA=[]
+            route=listA
     if temp==1:
         route=(nx.shortest_path(G,middle,end))
         #print(route)
     if temp==0:
+        current_direction.clear()
+        current_directionA.clear()
+        current_directionB.clear()
+
         y=(len(route)-1)
     else:    
         y=(len(route))
@@ -54,6 +64,7 @@ def directionPath(start, middle, end, botDirection,temp):
     count=len(route)
     present=botDirection # set the initial direction here
     headed=botDirection
+   
 
     ##################### default point  starts #################
     rightX=[north,west,south,east]
@@ -96,8 +107,12 @@ def directionPath(start, middle, end, botDirection,temp):
             westMap[i][j]=eastMap[j][i]
     #################### map point ends #############################
 
-    
+
     for i in range(0,count):
+        if temp==0:
+            current_directionA.append(present)
+        if temp==1:
+            current_directionB.append(present)
         a=route[i]
         if i+1!=count:
             b=route[i+1]
@@ -129,9 +144,18 @@ def directionPath(start, middle, end, botDirection,temp):
         #print("temp is 0")
         directionPath(start,middle,end,present,1)
         #print(way)
-    res.append(way)
-    res.append(command)
+    if temp==1:
+        res.append(way)
+        res.append(command)
+        res.append(present)
+        res.append(end)
+        current_directionA.pop()
+        current_direction=current_directionA+current_directionB
+        res.append(str(current_direction))
+        print("updated result")
+  
     return res
+    
 
 i=0
 previous_row_count = 1
@@ -157,11 +181,36 @@ while True:
                 #north,south,east,west=0,1,2,3 - botDirection
                 print('*Path Planing Started!*')
                 # mqtt comes here##
-                
-                result=directionPath(2,int(row[3]),int(row[4]),0,0)
+                print(current_location)
+                print(int(row[3]))
+                print(int(row[4]))
+                result=directionPath(current_location,int(row[3]),int(row[4]),facing_direction,0)
+                print("The result is",result)
                 print(int(row[3]))
                 row[6]=str(result[0])
                 row[7]=str(result[1])
+                facing_direction=result[2]
+                current_location=result[3]
+                current_direction=result[4]
+                data=[]
+                data.append(row[6])
+                data.append(row[7])
+                data.append(current_direction)
+                print(data)
+                #broker_address = "192.168.43.248"
+                broker_address = "192.168.29.15"
+                broker_port = 1883
+                mqtt_topic = "testTopic"
+                client = mqtt.Client()
+                client.connect(broker_address, broker_port)
+                mqtt_data=str(data)
+
+                client.publish(mqtt_topic, mqtt_data)
+                client.loop()
+
+                print("published")
+                client.disconnect()
+                
                 way.clear()
                 command.clear()
                 res.clear()

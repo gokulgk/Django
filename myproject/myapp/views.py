@@ -31,23 +31,23 @@ def csv_to_list(csv_file_path):
 def csv_view(request):
     response = HttpResponse()
     response['X-Frame-Options'] = 'SAMEORIGIN'
-    csv_file_path = 'C:\\Users\\gokul\\Desktop\\web\\Django\\myproject\\log.csv'
+    csv_file_path = 'C:\\Users\\Ashwin\\Desktop\\FYP\\serverFromGIT\\Django\\myproject\\log.csv'
     data = csv_to_list(csv_file_path)
     return render(request, 'csv.html', {'data': data})
 
 
-def my_view(request):
+def workspaceA(request):
     if request.method == 'POST':
         current_datetime = datetime.now()
         now = current_datetime.strftime("%H:%M:%S")
         file = open("log.csv", 'a')
-        check1 = request.POST.get('myCheckbox')
-        check2 = request.POST.get('myCheckbox1')
-        check3 = request.POST.get('myCheckbox2')
-        option1= request.POST.get('myComboBox')
-        option2= request.POST.get('myComboBox1')
-        option3= request.POST.get('myComboBox2')
-        dis_location=request.POST.get('dis_loc')
+        check1 = request.POST.get('storeCheckBox')
+        check2 = request.POST.get('dispatchCheckBox')
+        check3 = request.POST.get('workLocationCheckBox')
+        option1= request.POST.get('storeItemsComboBox')
+        option2= request.POST.get('startWorkLocationComboBox')
+        option3= request.POST.get('endWorkLocationComboBox')
+        dis_location=request.POST.get('dispatchCentreComboBox')
         destination= "12"
         req_type=""
         passnode=""
@@ -74,13 +74,13 @@ def my_view2(request):
         current_datetime = datetime.now()
         now = current_datetime.strftime("%H:%M:%S")
         file = open("log.csv", 'a')
-        check1 = request.POST.get('myCheckbox')
-        check2 = request.POST.get('myCheckbox1')
-        check3 = request.POST.get('myCheckbox2')
-        option1= request.POST.get('myComboBox')
-        option2= request.POST.get('myComboBox1')
-        option3= request.POST.get('myComboBox2')
-        dis_location=request.POST.get('dis_loc')
+        check1 = request.POST.get('storeCheckBox')
+        check2 = request.POST.get('dispatchCheckBox')
+        check3 = request.POST.get('workLocationCheckBox')
+        option1= request.POST.get('storeItemsComboBox')
+        option2= request.POST.get('startWorkLocationComboBox')
+        option3= request.POST.get('endWorkLocationComboBox')
+        dis_location=request.POST.get('dispatchCentreComboBox')
         destination= "22"
         req_type=""
         passnode=""
@@ -108,13 +108,13 @@ def my_view3(request):
         current_datetime = datetime.now()
         now = current_datetime.strftime("%H:%M:%S")
         file = open("log.csv", 'a')
-        check1 = request.POST.get('myCheckbox')
-        check2 = request.POST.get('myCheckbox1')
-        check3 = request.POST.get('myCheckbox2')
-        option1= request.POST.get('myComboBox')
-        option2= request.POST.get('myComboBox1')
-        option3= request.POST.get('myComboBox2')
-        dis_location=request.POST.get('dis_loc')
+        check1 = request.POST.get('storeCheckBox')
+        check2 = request.POST.get('dispatchCheckBox')
+        check3 = request.POST.get('workLocationCheckBox')
+        option1= request.POST.get('storeItemsComboBox')
+        option2= request.POST.get('startWorkLocationComboBox')
+        option3= request.POST.get('endWorkLocationComboBox')
+        dis_location=request.POST.get('dispatchCentreComboBox')
         destination= "32"
         req_type=""
         passnode=""
@@ -142,13 +142,13 @@ def my_view4(request):
         current_datetime = datetime.now()
         now = current_datetime.strftime("%H:%M:%S")
         file = open("log.csv", 'a')
-        check1 = request.POST.get('myCheckbox')
-        check2 = request.POST.get('myCheckbox1')
-        check3 = request.POST.get('myCheckbox2')
-        option1= request.POST.get('myComboBox')
-        option2= request.POST.get('myComboBox1')
-        option3= request.POST.get('myComboBox2')
-        dis_location=request.POST.get('dis_loc')
+        check1 = request.POST.get('storeCheckBox')
+        check2 = request.POST.get('dispatchCheckBox')
+        check3 = request.POST.get('workLocationCheckBox')
+        option1= request.POST.get('storeItemsComboBox')
+        option2= request.POST.get('startWorkLocationComboBox')
+        option3= request.POST.get('endWorkLocationComboBox')
+        dis_location=request.POST.get('dispatchCentreComboBox')
         destination= "15"
         req_type=""
         passnode=""

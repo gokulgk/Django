@@ -1,2 +1,8 @@
 Id,Time,Req_type,Passnode,Destination_node,Status,Path,Direction
-,22:22:19,Worklocation,12,12,Raised,,
+1,21:33:45,Store,1,12,Completed,"[2, 26, 25, 24, 23, 19, 14, 9, 10, 11, 1, 11, 10, 9, 12]","['straight', 'right', 'straight', 'left', 'straight', 'straight', 'left', 'straight', 'straight', 'straight', 'left', 'straight', 'right', 'straight', 'left', 'straight', 'pause', 'uTurn', 'straight', 'right', 'straight', 'left', 'straight', 'straight']"
+2,21:35:10,Store,1,12,Completed,"[12, 9, 10, 11, 1, 11, 10, 9, 12]","['uTurn', 'straight', 'straight', 'right', 'straight', 'left', 'straight', 'pause', 'uTurn', 'straight', 'right', 'straight', 'left', 'straight', 'straight']"
+3,21:39:15,Store,1,12,Completed,"[12, 9, 10, 11, 1, 11, 10, 9, 12]","['uTurn', 'straight', 'straight', 'right', 'straight', 'left', 'straight', 'pause', 'uTurn', 'straight', 'right', 'straight', 'left', 'straight', 'straight']"
+4,21:40:05,Store,1,12,Completed,"[12, 9, 10, 11, 1, 11, 10, 9, 12]","['uTurn', 'straight', 'straight', 'right', 'straight', 'left', 'straight', 'pause', 'uTurn', 'straight', 'right', 'straight', 'left', 'straight', 'straight']"
+5,21:41:04,Store,1,12,Completed,"[12, 9, 10, 11, 1, 11, 10, 9, 12]","['uTurn', 'straight', 'straight', 'right', 'straight', 'left', 'straight', 'pause', 'uTurn', 'straight', 'right', 'straight', 'left', 'straight', 'straight']"
+6,21:42:05,Store,1,12,Completed,"[12, 9, 10, 11, 1, 11, 10, 9, 12]","['uTurn', 'straight', 'straight', 'right', 'straight', 'left', 'straight', 'pause', 'uTurn', 'straight', 'right', 'straight', 'left', 'straight', 'straight']"
+7,21:43:21,Store,1,12,Completed,"[12, 9, 10, 11, 1, 11, 10, 9, 12]","['uTurn', 'straight', 'straight', 'right', 'straight', 'left', 'straight', 'pause', 'uTurn', 'straight', 'right', 'straight', 'left', 'straight', 'straight']"

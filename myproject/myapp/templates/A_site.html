@@ -1,82 +1,91 @@
 <!DOCTYPE html>
 <html>
-<style>
-  body {
-    background-color: blanchedalmond;
-  }
-
-  #head1 {
-    text-shadow: #1c1c1c 2.5px 2.5px;
-    text-align: center;
-    box-shadow: #333 4px 3.5px;
-    background-color: rgb(255, 29, 63);
-    ;
-    padding-left: 25%;
-    padding-right: 25%;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    color: #f1f6f3;
-  }
-
-  #From_details {
-    border: 2px solid black;
-    margin-right: auto;
-    box-shadow: #33333362 4.5px 3.5px;
-    padding-right: 10px;
-    border-radius: 10px;
-
-  }
-
-  #sub_button {
-    background-color: rgb(255, 29, 63);
-    color: aliceblue;
-    margin-left: 15px;
-    padding: 8px;
-    border-radius: 5px;
-  }
-
-  #sub_button1 {
-    background-color: rgb(255, 29, 63);
-    color: aliceblue;
-    margin-left: 15px;
-    padding: 8px;
-    border-radius: 5px;
-  }
-
-  #slocation {
-    margin-top: 15px;
-    padding-right: 25px;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    text-align: center;
-  }
-
-  #myDiv {
-    width: 100%;
-    height: 50%;
-    overflow: auto;
-    text-align: center;
-  }
-</style>
-
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: blanchedalmond;
+    }
+  
+    #head1 {
+      font-family: Arial, Helvetica, sans-serif;
+      text-shadow: #1c1c1c 2.5px 2.5px;
+      text-align: center;
+      box-shadow: #333 4px 3.5px;
+      background-color: rgb(255, 29, 63);
+      ;
+      padding-left: 25%;
+      padding-right: 25%;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      color: #f1f6f3;
+    }
+  
+    #From_details {
+      font-family: Arial, Helvetica, sans-serif;
+      border: 2px solid black;
+      margin-right: auto;
+      box-shadow: #33333362 4.5px 3.5px;
+      padding-right: 10px;
+      border-radius: 10px;
+  
+    }
+  
+    #sub_button {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: rgb(255, 29, 63);
+      color: aliceblue;
+      margin-left: 15px;
+      padding: 8px;
+      border-radius: 5px;
+    }
+  
+    #sub_button1 {
+      font-family: Arial, Helvetica, sans-serif;
+      background-color: rgb(255, 29, 63);
+      color: aliceblue;
+      margin-left: 15px;
+      padding: 8px;
+      border-radius: 5px;
+    }
+  
+    #slocation {
+      font-family: Arial, Helvetica, sans-serif;
+      margin-top: 15px;
+      padding-right: 25px;
+      padding-top: 7px;
+      padding-bottom: 7px;
+      text-align: center;
+    }
+  
+    #myDiv {
+      font-family: Arial, Helvetica, sans-serif;
+      width: 100%;
+      height: 50%;
+      overflow: auto;
+      text-align: center;
+    }
+  </style>
 <head>
   <title>AGV Control pannel</title>
-  <div>
-    <h1 id="head1">AGV Dasboard Workspace A</h1>
-  </div>
+  
+  </script>
 </head>
 
 <body>
-  <form method="POST" action="{% url 'my_view' %}">
+  <div>
+    <h1 id="head1">AGV Dasboard Workspace A</h1>
+  </div>
+
+  <form method="POST" action="{% url 'workspaceA' %}">
     {% csrf_token %}
     <div id="From_details">
       <label for="details" style="padding-left: 7px;">Item request information</label>
       <div style="padding-top: 7px;">
         <label>
-          <input type="checkbox" id="myCheckbox" name="myCheckbox" value="Store"> From store
+          <input type="checkbox" id="storeCheckBox" name="storeCheckBox" value="Store"> From store
         </label>
-        <label style="margin-left: 49.5px;" for="myComboBox">Select an Item from store:</label>
-        <select id="myComboBox" name="myComboBox" disabled>
+        <label style="margin-left: 49.5px;" for="storeItemsComboBox">Select an Item from store:</label>
+        <select id="storeItemsComboBox" name="storeItemsComboBox" disabled>
           <option value="1">Item 1</option>
           <option value="1">Item 2</option>
           <option value="3">Item 3</option>
@@ -86,17 +95,17 @@
       </div>
       <div id="details1" style="padding-top: 10px;">
         <label>
-          <input type="checkbox" id="myCheckbox1" name="myCheckbox1" value="Disapatch"> Disapatch
+          <input type="checkbox" id="dispatchCheckBox" name="dispatchCheckBox" value="Dispatch"> Dispatch
         </label>
-        <label style="margin-left: 55px;" for="myComboBox1">From location</label>
-        <select id="myComboBox1" name="myComboBox1" disabled>
+        <label style="margin-left: 55px;" for="startWorkLocationComboBox">From location</label>
+        <select id="startWorkLocationComboBox" name="startWorkLocationComboBox" disabled>
           <option value="12">Workspace_A</option>
           <option value="22">Workspace_B</option>
           <option value="32">Workspace_C</option>
           <option value="15">Workspace_D</option>
         </select>
-        <label style="margin-left: 30px;" for="dis_loc">To Disapatch</label>
-        <select id="dis_loc" name="dis_loc" disabled>
+        <label style="margin-left: 30px;" for="dispatchCentreComboBox">To Dispatch</label>
+        <select id="dispatchCentreComboBox" name="dispatchCentreComboBox" disabled>
           <option value="2">Dipatch_A</option>
           <option value="6">Dipatch_B</option>
           <option value="5">Dipatch_C</option>
@@ -105,11 +114,11 @@
       </div>
       <div id="details2" style="padding-top: 10px;padding-bottom: 10px;">
         <label>
-          <input type="checkbox" id="myCheckbox2" name="myCheckbox2" value="Worklocation"> Work location
+          <input type="checkbox" id="workLocationCheckBox" name="workLocationCheckBox" value="Worklocation"> Work location
         </label>
-        <label style="margin-left: 30px;" for="myComboBox2">To location</label>
-        <select id="myComboBox2" name="myComboBox2" disabled>
-          <option value="12">Workspace_A</option>
+        <label style="margin-left: 30px;" for="endWorkLocationComboBox">To location</label>
+        <select id="endWorkLocationComboBox" name="endWorkLocationComboBox" disabled>
+          <!-- <option value="12">Workspace_A</option> -->
           <option value="22">Workspace_B</option>
           <option value="32">Workspace_C</option>
           <option value="15">Workspace_D</option>
@@ -118,7 +127,7 @@
 
       <div style="text-align: center;margin-top: 15px;">
         <button type="submit" id="sub_button" onclick="location.reload()"> Submit</button>
-        <button id="sub_button1" onclick="location.reload()">Refresh</button>
+        <button id="ref_button" onclick="location.reload()">Refresh</button>
       </div>
       <div
         style="text-align: center;margin-top: 10px; position: relative;margin-bottom: 15px;border: #1c1c1c 2px;overflow: auto;background-color:blanchedalmond;max-height: 400px;">
@@ -137,13 +146,13 @@
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-      var checkbox = document.getElementById("myCheckbox");
-      var comboBox = document.getElementById("myComboBox");
-      var checkbox1 = document.getElementById("myCheckbox1");
-      var comboBox1 = document.getElementById("myComboBox1");
-      var checkbox2 = document.getElementById("myCheckbox2");
-      var comboBox2 = document.getElementById("myComboBox2");
-      var dis = document.getElementById("dis_loc");
+      var checkbox = document.getElementById("storeCheckBox");
+      var comboBox = document.getElementById("storeItemsComboBox");
+      var checkbox1 = document.getElementById("dispatchCheckBox");
+      var comboBox1 = document.getElementById("startWorkLocationComboBox");
+      var checkbox2 = document.getElementById("workLocationCheckBox");
+      var comboBox2 = document.getElementById("endWorkLocationComboBox");
+      var dis = document.getElementById("dispatchCentreComboBox");
       checkbox.addEventListener("change", function () {
         if (checkbox.checked) {
           comboBox.disabled = false;
