@@ -5,6 +5,9 @@ from django.http import HttpResponse
 from datetime import datetime
 import csv
 from django.contrib.auth import authenticate, login, logout
+import subprocess
+
+
 
 def login(request):
     if request.method == 'POST':
@@ -31,39 +34,48 @@ def csv_to_list(csv_file_path):
 def csv_view(request):
     response = HttpResponse()
     response['X-Frame-Options'] = 'SAMEORIGIN'
-    csv_file_path = 'C:\\Users\\Ashwin\\Desktop\\FYP\\serverFromGIT\\Django\\myproject\\log.csv'
+    csv_file_path = 'C:\\Users\\gokul\\Desktop\\web\\Django\\myproject\\log.csv'
     data = csv_to_list(csv_file_path)
     return render(request, 'csv.html', {'data': data})
 
 
-def workspaceA(request):
+def my_view(request):
     if request.method == 'POST':
         current_datetime = datetime.now()
         now = current_datetime.strftime("%H:%M:%S")
         file = open("log.csv", 'a')
-        check1 = request.POST.get('storeCheckBox')
-        check2 = request.POST.get('dispatchCheckBox')
-        check3 = request.POST.get('workLocationCheckBox')
-        option1= request.POST.get('storeItemsComboBox')
-        option2= request.POST.get('startWorkLocationComboBox')
-        option3= request.POST.get('endWorkLocationComboBox')
-        dis_location=request.POST.get('dispatchCentreComboBox')
+        check1 = request.POST.get('myCheckbox')
+        check2 = request.POST.get('myCheckbox1')
+        check3 = request.POST.get('myCheckbox2')
+        check4 = request.POST.get('hp')
+        option1= request.POST.get('myComboBox')
+        option2= request.POST.get('myComboBox1')
+        option3= request.POST.get('myComboBox2')
+        dis_location=request.POST.get('dis_loc')
         destination= "12"
         req_type=""
         passnode=""
+        if(check4=="highp"):
+            hp="High"
+        else:
+            hp="None"
         if(str(check1)!="None"):
             req_type=str(check1)
             passnode=option1
-            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(destination)+',Raised'+',,\n')
+            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(destination)+',Raised'+',,,'+hp+'\n')
         if(str(check2)!="None"):
             req_type=str(check2)
             passnode=option2
-            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(dis_location)+',Raised'+',,\n')
+            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(dis_location)+',Raised'+',,,'+hp+'\n')
         if(str(check3)!="None"):
             req_type=str(check3)
             passnode=option3
-            file.write(','+str(now)+','+req_type+','+destination+','+str(passnode)+',Raised'+',,\n')
+            file.write(','+str(now)+','+req_type+','+destination+','+str(passnode)+',Raised'+',,,'+hp+'\n')
         file.close()
+        
+        if hp=="High":
+            subprocess.run(["python", "C:\\Users\\gokul\\Desktop\\web\\Django\\myproject\\priority.py"])
+
         # Do something with the name and email values
         return HttpResponse('Thanks for submitting the form!')
     else:
@@ -74,13 +86,13 @@ def my_view2(request):
         current_datetime = datetime.now()
         now = current_datetime.strftime("%H:%M:%S")
         file = open("log.csv", 'a')
-        check1 = request.POST.get('storeCheckBox')
-        check2 = request.POST.get('dispatchCheckBox')
-        check3 = request.POST.get('workLocationCheckBox')
-        option1= request.POST.get('storeItemsComboBox')
-        option2= request.POST.get('startWorkLocationComboBox')
-        option3= request.POST.get('endWorkLocationComboBox')
-        dis_location=request.POST.get('dispatchCentreComboBox')
+        check1 = request.POST.get('myCheckbox')
+        check2 = request.POST.get('myCheckbox1')
+        check3 = request.POST.get('myCheckbox2')
+        option1= request.POST.get('myComboBox')
+        option2= request.POST.get('myComboBox1')
+        option3= request.POST.get('myComboBox2')
+        dis_location=request.POST.get('dis_loc')
         destination= "22"
         req_type=""
         passnode=""
@@ -108,13 +120,13 @@ def my_view3(request):
         current_datetime = datetime.now()
         now = current_datetime.strftime("%H:%M:%S")
         file = open("log.csv", 'a')
-        check1 = request.POST.get('storeCheckBox')
-        check2 = request.POST.get('dispatchCheckBox')
-        check3 = request.POST.get('workLocationCheckBox')
-        option1= request.POST.get('storeItemsComboBox')
-        option2= request.POST.get('startWorkLocationComboBox')
-        option3= request.POST.get('endWorkLocationComboBox')
-        dis_location=request.POST.get('dispatchCentreComboBox')
+        check1 = request.POST.get('myCheckbox')
+        check2 = request.POST.get('myCheckbox1')
+        check3 = request.POST.get('myCheckbox2')
+        option1= request.POST.get('myComboBox')
+        option2= request.POST.get('myComboBox1')
+        option3= request.POST.get('myComboBox2')
+        dis_location=request.POST.get('dis_loc')
         destination= "32"
         req_type=""
         passnode=""
@@ -142,13 +154,13 @@ def my_view4(request):
         current_datetime = datetime.now()
         now = current_datetime.strftime("%H:%M:%S")
         file = open("log.csv", 'a')
-        check1 = request.POST.get('storeCheckBox')
-        check2 = request.POST.get('dispatchCheckBox')
-        check3 = request.POST.get('workLocationCheckBox')
-        option1= request.POST.get('storeItemsComboBox')
-        option2= request.POST.get('startWorkLocationComboBox')
-        option3= request.POST.get('endWorkLocationComboBox')
-        dis_location=request.POST.get('dispatchCentreComboBox')
+        check1 = request.POST.get('myCheckbox')
+        check2 = request.POST.get('myCheckbox1')
+        check3 = request.POST.get('myCheckbox2')
+        option1= request.POST.get('myComboBox')
+        option2= request.POST.get('myComboBox1')
+        option3= request.POST.get('myComboBox2')
+        dis_location=request.POST.get('dis_loc')
         destination= "15"
         req_type=""
         passnode=""

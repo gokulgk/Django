@@ -19,17 +19,7 @@ weighted_edges=[(6,7,3),(7,12,3),(7,8,5),(1,11,3),(2,26,3),
 
 ########################################################################clears log.csv###############################################################
 # Open the CSV file in read mode and read its contents
-with open('log.csv', 'r') as file:
-    reader = csv.reader(file)
-    rows = list(reader)
 
-# Get the first row (header) of the CSV file
-header = rows[0]
-
-# Open the CSV file in write mode and write the header row back to the file
-with open('log.csv', 'w', newline='') as file:
-    writer = csv.writer(file)
-    writer.writerow(header)
     
 #################################################################################################################################################
     
@@ -149,7 +139,8 @@ def directionPath(start, middle, end, botDirection,temp):
         res.append(command)
         res.append(present)
         res.append(end)
-        current_directionA.pop()
+        if(start!=middle):
+            current_directionA.pop()
         current_direction=current_directionA+current_directionB
         res.append(str(current_direction))
         print("updated result")
@@ -173,6 +164,7 @@ while True:
 
         # Loop through each new row and update the data
         for row in new_rows:
+            if row[5]!="Completed":
                 i=i+1
                 row[5] = 'Procesing'
                 row[0]=i
@@ -198,24 +190,26 @@ while True:
                 data.append(current_direction)
                 print(data)
                 #broker_address = "192.168.43.248"
-                broker_address = "192.168.29.15"
-                broker_port = 1883
-                mqtt_topic = "testTopic"
-                client = mqtt.Client()
-                client.connect(broker_address, broker_port)
-                mqtt_data=str(data)
-
-                client.publish(mqtt_topic, mqtt_data)
-                client.loop()
-
-                print("published")
-                client.disconnect()
-                
+##                broker_address = "192.168.29.15"
+##                broker_port = 1883
+##                mqtt_topic = "testTopic"
+##                client = mqtt.Client()
+##                client.connect(broker_address, broker_port)
+##                mqtt_data=str(data)
+##
+##                client.publish(mqtt_topic, mqtt_data)
+##                client.loop()
+##
+##                print("published")
+##                client.disconnect()
+##                
                 way.clear()
                 command.clear()
                 res.clear()
                 row[5] = 'Completed'
+                time.sleep(60)  ##### add mqtt complete logic here######
                 print('*Request completed!*')
+                
                 with open('log.csv', 'w' ,newline='') as csv_file:
                     writer = csv.writer(csv_file)
                     writer.writerows(rows)
