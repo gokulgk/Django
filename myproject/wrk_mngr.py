@@ -3,6 +3,7 @@ import time
 import csv
 import networkx as nx
 import paho.mqtt.client as mqtt
+import pandas as pd
 current_location=2
 facing_direction=0
 routeA,routeB=[],[]
@@ -150,73 +151,102 @@ def directionPath(start, middle, end, botDirection,temp):
 
 i=0
 previous_row_count = 1
+done_rows=[]
 
 # Set up a loop to continuously check for changes in the CSV file
 while True:
+    ind=0
     with open('log.csv', 'r') as file:
         reader = csv.reader(file)
+        next(reader)
         rows = list(reader)
-
-    # Check if there are any new rows added to the CSV file
+        
+         # Check if there are any new rows added to the CSV file
     if len(rows) > previous_row_count:
         # Get the new row(s) added to the CSV file
         new_rows = rows[previous_row_count:]
-
         # Loop through each new row and update the data
-        for row in new_rows:
-            if row[5]!="Completed":
-                i=i+1
-                row[5] = 'Procesing'
-                row[0]=i
-                print(row)
-                #directionPath(start, middle, end, botDirection,temp)
-                #north,south,east,west=0,1,2,3 - botDirection
-                print('*Path Planing Started!*')
-                # mqtt comes here##
-                print(current_location)
-                print(int(row[3]))
-                print(int(row[4]))
-                result=directionPath(current_location,int(row[3]),int(row[4]),facing_direction,0)
-                print("The result is",result)
-                print(int(row[3]))
-                row[6]=str(result[0])
-                row[7]=str(result[1])
-                facing_direction=result[2]
-                current_location=result[3]
-                current_direction=result[4]
-                data=[]
-                data.append(row[6])
-                data.append(row[7])
-                data.append(current_direction)
-                print(data)
-                #broker_address = "192.168.43.248"
-##                broker_address = "192.168.29.15"
-##                broker_port = 1883
-##                mqtt_topic = "testTopic"
-##                client = mqtt.Client()
-##                client.connect(broker_address, broker_port)
-##                mqtt_data=str(data)
-##
-##                client.publish(mqtt_topic, mqtt_data)
-##                client.loop()
-##
-##                print("published")
-##                client.disconnect()
-##                
-                way.clear()
-                command.clear()
-                res.clear()
-                row[5] = 'Completed'
-                time.sleep(60)  ##### add mqtt complete logic here######
-                print('*Request completed!*')
-                
-                with open('log.csv', 'w' ,newline='') as csv_file:
-                    writer = csv.writer(csv_file)
-                    writer.writerows(rows)
-                    print("Written on csv")
+        for row in rows:
+            if(row[5]!="Completed"):
+                    i=i+1
+                    row[5] = 'Procesing'
+                    row[0]=i
+                    print(row)
+                    #directionPath(start, middle, end, botDirection,temp)
+                    #north,south,east,west=0,1,2,3 - botDirection
+                    print('*Path Planing Started!*')
+                    # mqtt comes here##
+                    print(current_location)
+                    print(int(row[3]))
+                    print(int(row[4]))
+                    result=directionPath(current_location,int(row[3]),int(row[4]),facing_direction,0)
+                    print("The result is",result)
+                    print(int(row[3]))
+                    row[6]=str(result[0])
+                    row[7]=str(result[1])
 
-        # Update the previous row count to the current row count
+                    facing_direction=result[2]
+                    current_location=result[3]
+                    current_direction=result[4]
+                    data=[]
+                    data.append(row[6])
+                    data.append(row[7])
+                    data.append(current_direction)
+                    
+                    #broker_address = "192.168.43.248"
+    ##                broker_address = "192.168.29.15"
+    ##                broker_port = 1883
+    ##                mqtt_topic = "testTopic"
+    ##                client = mqtt.Client()
+    ##                client.connect(broker_address, broker_port)
+    ##                mqtt_data=str(data)
+    ##
+    ##                client.publish(mqtt_topic, mqtt_data)
+    ##                client.loop()
+    ##
+    ##                print("published")
+    ##                client.disconnect()
+    ##                
+                    way.clear()
+                    command.clear()
+                    res.clear()
+                    row[5] = 'Completed'
+                    #time.sleep(10)  ##### add mqtt complete logic here######
+                    
+
+                    # Define callback function for when a message is received
+                    def on_message(client, userdata, message):
+                        global msg_received
+                        msg_received = True
+                        print(f"Received message on topic {message.topic}: {message.payload.decode()}")
+
+                    # Create MQTT client instance and connect to broker
+                    client = mqtt.Client()
+                    client.connect("192.168.1.102", 1883, 60)
+
+                    # Subscribe to topic and wait for message
+                    client.subscribe("comp")
+                    client.on_message = on_message
+
+                    # Wait for message in a while loop
+                    msg_received = False
+                    while not msg_received:
+                        client.loop()
+
+                    print("Message received, exiting...")
+                    print('*Request completed!*')
+                    
+                    
+
+                   
+                    df = pd.read_csv('log.csv')
+                              
+                    df.loc[ind] = row
+                    df.to_csv('log.csv', index=False)
+
+            ind=ind+1
         previous_row_count = len(rows)
+        
+        # Update the previous row count to the current row count
 
-    # Wait for a specified amount of time before checking again
-    time.sleep(5)  # 10 seconds
+
