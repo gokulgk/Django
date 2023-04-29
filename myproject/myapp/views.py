@@ -34,7 +34,7 @@ def csv_to_list(csv_file_path):
 def csv_view(request):
     response = HttpResponse()
     response['X-Frame-Options'] = 'SAMEORIGIN'
-    csv_file_path = 'C:\\Users\\gokul\\Desktop\\web\\Django\\myproject\\log.csv'
+    csv_file_path = 'C:\\Users\\Ashwin\\Desktop\\Django\\Django\\myproject\\log.csv'
     data = csv_to_list(csv_file_path)
     return render(request, 'csv.html', {'data': data})
 
@@ -74,7 +74,7 @@ def my_view(request):
         file.close()
         
         if hp=="High":
-            subprocess.run(["python", "C:\\Users\\gokul\\Desktop\\web\\Django\\myproject\\priority.py"])
+            subprocess.run(["python", "C:\\Users\\Ashwin\\Desktop\\Django\\Django\\myproject\\priority.py"])
 
         # Do something with the name and email values
         return HttpResponse('Thanks for submitting the form!')

@@ -3,8 +3,8 @@ import time
 import csv
 import networkx as nx
 import paho.mqtt.client as mqtt
-import pandas as pd
-
+current_location=2
+facing_direction=0
 routeA,routeB=[],[]
 command=[]
 way,route,a,res,directionroute,current_direction,empty_list,current_directionA,current_directionB=[],[],[],[],[],[],[],[],[]
@@ -20,10 +20,28 @@ weighted_edges=[(6,7,3),(7,12,3),(7,8,5),(1,11,3),(2,26,3),
 ########################################################################clears log.csv###############################################################
 # Open the CSV file in read mode and read its contents
 
-  
-
-#################################################################################################################################################
     
+#################################################################################################################################################
+
+# Define the callback function
+def on_message(client, userdata, msg):
+    # This function will be called when a message is received
+    print(msg.topic+" "+str(msg.payload))
+    # Set a flag to indicate that a message has been received
+    global message_received
+    message_received = True
+
+#broker_address = "192.168.43.248"
+broker_address = "192.168.29.15"
+broker_port = 1883
+client = mqtt.Client()
+client.connect(broker_address, broker_port)  
+# Assign the callback function
+client.on_message = on_message
+client.subscribe("status")
+# Set the message_received flag to False
+message_received = False
+
 def directionPath(start, middle, end, botDirection,temp):
     current_direction=empty_list
     G=nx.Graph()
@@ -151,106 +169,71 @@ def directionPath(start, middle, end, botDirection,temp):
 
 i=0
 previous_row_count = 1
-done_rows=[]
 
 # Set up a loop to continuously check for changes in the CSV file
 while True:
-    ind=0
     with open('log.csv', 'r') as file:
         reader = csv.reader(file)
-        next(reader)
         rows = list(reader)
-        
-##         # Check if there are any new rows added to the CSV file
-##    if len(rows) > previous_row_count:
-##        # Get the new row(s) added to the CSV file
-##        new_rows = rows[previous_row_count:]
-##        # Loop through each new row and update the data
-        for row in rows:
-            if(row[5]!="Completed"):
-                    i=i+1
-                    row[5] = 'Procesing'
-                    row[0]=i
-                    print(row)
-                    #directionPath(start, middle, end, botDirection,temp)
-                    #north,south,east,west=0,1,2,3 - botDirection
-                    print('*Path Planing Started!*')
-                    # mqtt comes here##
-                    
-                    print(int(row[3]))
-                    print(int(row[4]))
-                    
-                    with open('mqtt_messages.txt', 'r') as file:
-                        lines = file.readlines()
-                        for line in reversed(lines):
-                            if line.strip():  # check if the line is not empty
-                                last_line = line
-                                break
-                        print(last_line)
-                    values = eval(last_line)
-                    current_location = int(values[0])
-                    facing_direction = int(values[1])
-                    print(current_location)
 
-                    result=directionPath(current_location,int(row[3]),int(row[4]),facing_direction,0)
-                    print("The result is",result)
-                    print(int(row[3]))
-                    row[6]=str(result[0])
-                    row[7]=str(result[1])
+    # Check if there are any new rows added to the CSV file
+    if len(rows) > previous_row_count:
+        # Get the new row(s) added to the CSV file
+        new_rows = rows[previous_row_count:]
 
-                    facing_direction=result[2]
-                    current_location=result[3]
-                    current_direction=result[4]
-                    data=[]
-                    data.append(row[6])
-                    data.append(row[7])
-                    data.append(current_direction)
-                    
-                    client = mqtt.Client()
-                    client.connect("192.168.29.15", 1883, 60) 
-                    mqtt_topic = "testTopic"
-                    mqtt_data=str(data)
-                    client.publish(mqtt_topic, mqtt_data)
+        # Loop through each new row and update the data
+        for row in new_rows:
+            if row[5]!="Completed":
+                i=i+1
+                row[5] = 'Procesing'
+                row[0]=i
+                print(row)
+                #directionPath(start, middle, end, botDirection,temp)
+                #north,south,east,west=0,1,2,3 - botDirection
+                print('*Path Planing Started!*')
+                # mqtt comes here##
+                print(current_location)
+                print(int(row[3]))
+                print(int(row[4]))
+                result=directionPath(current_location,int(row[3]),int(row[4]),facing_direction,0)
+                print("The result is",result)
+                print(int(row[3]))
+                row[6]=str(result[0])
+                row[7]=str(result[1])
+                facing_direction=result[2]
+                current_location=result[3]
+                current_direction=result[4]
+                data=[]
+                data.append(row[6])
+                data.append(row[7])
+                data.append(current_direction)
+                print(data)
+
+                mqtt_topic = "testTopic"
+                mqtt_data=str(data)
+                client.publish(mqtt_topic, mqtt_data)
+                client.loop()
+                print("published")
+                client.disconnect()
+##                
+                way.clear()
+                command.clear()
+                res.clear()
+                row[5] = 'Completed'
+                # Start a while loop
+                while not message_received:
+                    # Call the loop() function to check for incoming messages
                     client.loop()
-                    print("published")
+                message_received = False
+                print('*Request completed!*')
+                
+                with open('log.csv', 'w' ,newline='') as csv_file:
+                    writer = csv.writer(csv_file)
+                    writer.writerows(rows)
+                    print("Written on csv")
 
-    ##                
-                    way.clear()
-                    command.clear()
-                    res.clear()
-                    row[5] = 'Completed'
-                    #time.sleep(10)  ##### add mqtt complete logic here######
-                    
-
-                    # Define callback function for when a message is received
-                    def on_message(client, userdata, message):
-                        global msg_received
-                        msg_received = True
-                        print(f"Received message on topic {message.topic}: {message.payload.decode()}")
-
-                    # Create MQTT client instance and connect to broker
-                    
-
-                    # Subscribe to topic and wait for message
-                    client.subscribe("comp")
-                    client.on_message = on_message
-
-                    # Wait for message in a while loop
-                    msg_received = False
-                    while not msg_received:
-                        client.loop()
-                    client.disconnect()
-
-                    print("Message received, exiting...")
-                    print('*Request completed!*')
-                    
-                    df = pd.read_csv('log.csv')
-                              
-                    df.loc[ind] = row
-                    df.to_csv('log.csv', index=False)
-
-            ind=ind+1
-        previous_row_count = len(rows)
-        
         # Update the previous row count to the current row count
+        previous_row_count = len(rows)
 
+    # Wait for a specified amount of time before checking again
+    time.sleep(5)  # 10 seconds
