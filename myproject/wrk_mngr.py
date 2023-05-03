@@ -4,6 +4,7 @@ import csv
 import networkx as nx
 import paho.mqtt.client as mqtt
 import pandas as pd
+import subprocess
 
 routeA,routeB=[],[]
 command=[]
@@ -246,6 +247,8 @@ while True:
                             with open("status.txt", "w") as f: 
                                 f.write("none")
                                 print("Rescheduled")
+                                print("Raising Interupt to bot")
+                                subprocess.run(["python", "publish.py"])
                                 i=i-1
                             break
                         else:
