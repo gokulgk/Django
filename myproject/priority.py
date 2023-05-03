@@ -1,23 +1,5 @@
 import csv
 import os
-import signal
-import psutil
-import subprocess
-
-
-
-
-def stop_process(process_name):
-    for proc in psutil.process_iter():
-        if proc.name() == process_name:
-            os.kill(proc.pid, signal.SIGTERM)
-            print(f"Process {process_name} (PID {proc.pid}) stopped.")
-            return
-    print(f"No process named {process_name} was found.")
-
-# Example usage: stop a program named "myprogram.py"
-stop_process("py.exe")
-
 
 i=0
 k=0
@@ -60,12 +42,6 @@ with open('log.csv', mode='w', newline='') as file:
     writer.writerows(rows)
 
 
-subprocess.run(["python", "wrk_mngr.py"])
-
-
-
-
-
-
-
+with open("status.txt", "w") as f: 
+   f.write("priority") 
 
