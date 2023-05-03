@@ -4,8 +4,7 @@ import csv
 import networkx as nx
 import paho.mqtt.client as mqtt
 import pandas as pd
-current_location=2
-facing_direction=0
+
 routeA,routeB=[],[]
 command=[]
 way,route,a,res,directionroute,current_direction,empty_list,current_directionA,current_directionB=[],[],[],[],[],[],[],[],[]
@@ -21,7 +20,8 @@ weighted_edges=[(6,7,3),(7,12,3),(7,8,5),(1,11,3),(2,26,3),
 ########################################################################clears log.csv###############################################################
 # Open the CSV file in read mode and read its contents
 
-    
+  
+
 #################################################################################################################################################
     
 def directionPath(start, middle, end, botDirection,temp):
@@ -161,11 +161,11 @@ while True:
         next(reader)
         rows = list(reader)
         
-         # Check if there are any new rows added to the CSV file
-    if len(rows) > previous_row_count:
-        # Get the new row(s) added to the CSV file
-        new_rows = rows[previous_row_count:]
-        # Loop through each new row and update the data
+##         # Check if there are any new rows added to the CSV file
+##    if len(rows) > previous_row_count:
+##        # Get the new row(s) added to the CSV file
+##        new_rows = rows[previous_row_count:]
+##        # Loop through each new row and update the data
         for row in rows:
             if(row[5]!="Completed"):
                     i=i+1
@@ -176,9 +176,22 @@ while True:
                     #north,south,east,west=0,1,2,3 - botDirection
                     print('*Path Planing Started!*')
                     # mqtt comes here##
-                    print(current_location)
+                    
                     print(int(row[3]))
                     print(int(row[4]))
+                    
+                    with open('mqtt_messages.txt', 'r') as file:
+                        lines = file.readlines()
+                        for line in reversed(lines):
+                            if line.strip():  # check if the line is not empty
+                                last_line = line
+                                break
+                        print(last_line)
+                    values = eval(last_line)
+                    current_location = int(values[0])
+                    facing_direction = int(values[1])
+                    print(current_location)
+
                     result=directionPath(current_location,int(row[3]),int(row[4]),facing_direction,0)
                     print("The result is",result)
                     print(int(row[3]))
@@ -193,19 +206,14 @@ while True:
                     data.append(row[7])
                     data.append(current_direction)
                     
-                    #broker_address = "192.168.43.248"
-    ##                broker_address = "192.168.29.15"
-    ##                broker_port = 1883
-    ##                mqtt_topic = "testTopic"
-    ##                client = mqtt.Client()
-    ##                client.connect(broker_address, broker_port)
-    ##                mqtt_data=str(data)
-    ##
-    ##                client.publish(mqtt_topic, mqtt_data)
-    ##                client.loop()
-    ##
-    ##                print("published")
-    ##                client.disconnect()
+                    client = mqtt.Client()
+                    client.connect("192.168.29.15", 1883, 60) 
+                    mqtt_topic = "testTopic"
+                    mqtt_data=str(data)
+                    client.publish(mqtt_topic, mqtt_data)
+                    client.loop()
+                    print("published")
+
     ##                
                     way.clear()
                     command.clear()
@@ -221,8 +229,7 @@ while True:
                         print(f"Received message on topic {message.topic}: {message.payload.decode()}")
 
                     # Create MQTT client instance and connect to broker
-                    client = mqtt.Client()
-                    client.connect("192.168.1.102", 1883, 60)
+                    
 
                     # Subscribe to topic and wait for message
                     client.subscribe("comp")
@@ -246,10 +253,7 @@ while True:
                              if(msg_received!= False):
                                  print("Message received, exiting...")
                                  print('*Request completed!*')
-                    
-                    
-
-                   
+ 
                                  df = pd.read_csv('log.csv')
                               
                                  df.loc[ind] = row
