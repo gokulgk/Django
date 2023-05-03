@@ -230,23 +230,32 @@ while True:
 
                     # Wait for message in a while loop
                     msg_received = False
-                    while not msg_received:
-                        client.loop()
-
-                    print("Message received, exiting...")
-                    print('*Request completed!*')
+                    pr_status="none"
+                    while (1):
+                        with open('status.txt') as f:
+                            first_line = f.readline()
+                            pr_status=first_line
+                        if(pr_status!="none"):
+                            with open("status.txt", "w") as f: 
+                                f.write("none")
+                                print("Rescheduled")
+                                i=i-1
+                            break
+                        else:
+                             client.loop()
+                             if(msg_received!= False):
+                                 print("Message received, exiting...")
+                                 print('*Request completed!*')
                     
                     
 
                    
-                    df = pd.read_csv('log.csv')
+                                 df = pd.read_csv('log.csv')
                               
-                    df.loc[ind] = row
-                    df.to_csv('log.csv', index=False)
+                                 df.loc[ind] = row
+                                 df.to_csv('log.csv', index=False)
 
-            ind=ind+1
-        previous_row_count = len(rows)
-        
-        # Update the previous row count to the current row count
-
-
+                                 ind=ind+1
+                                 previous_row_count = len(rows)
+                                 break
+                    break
