@@ -13,7 +13,7 @@ client = mqtt.Client()
 client.on_message = on_message
 
 # Connect to MQTT broker
-client.connect("192.168.29.15", 1883, 60)
+client.connect("192.168.110.132", 1883, 60)
 
 # Subscribe to the topic of interest
 client.subscribe("location")

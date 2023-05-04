@@ -168,6 +168,7 @@ while True:
 ##        new_rows = rows[previous_row_count:]
 ##        # Loop through each new row and update the data
         for row in rows:
+            ind=ind+1
             if(row[5]!="Completed"):
                     i=i+1
                     row[5] = 'Procesing'
@@ -208,7 +209,7 @@ while True:
                     data.append(current_direction)
                     
                     client = mqtt.Client()
-                    client.connect("192.168.29.15", 1883, 60) 
+                    client.connect("192.168.110.132", 1883, 60) 
                     mqtt_topic = "testTopic"
                     mqtt_data=str(data)
                     client.publish(mqtt_topic, mqtt_data)
@@ -259,10 +260,8 @@ while True:
  
                                  df = pd.read_csv('log.csv')
                               
-                                 df.loc[ind] = row
+                                 df.loc[i-1] = row
                                  df.to_csv('log.csv', index=False)
-
-                                 ind=ind+1
-                                 previous_row_count = len(rows)
                                  break
+                    previous_row_count = len(rows)
                     break

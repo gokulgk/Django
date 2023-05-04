@@ -1,7 +1,7 @@
 import paho.mqtt.client as mqtt
 
 # MQTT broker configuration
-BROKER_ADDRESS = "192.168.29.15"
+BROKER_ADDRESS = "192.168.110.132"
 BROKER_PORT = 1883
 TOPIC = "interrupt"
 
