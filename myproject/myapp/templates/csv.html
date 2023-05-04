@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CSV Viewer</title>
+	<style>
+		table {
+			border-collapse: collapse;
+			width: 100%;
+			max-width: 1000px;
+			margin: auto;
+			margin-top: 20px;
+			margin-bottom: 20px;
+            overflow: auto;
+            max-height: 500px;
+            border: 1px solid black;
+			overflow: auto;
+		}
+		th, td {
+			border: 1px solid #0e0d0d;
+			padding: 8px;
+			text-align: left;
+		}
+		th {
+			background-color:rgb(29, 123, 255);
+			font-weight: bold;
+			text-align: center;
+            color: white;
+            text-shadow: #0e0d0d 1px 1px;
+		}
+		tr:nth-child(even) {
+			background-color: rgb(249, 249, 249);
+		}
+	</style>
+</head>
+<body>
+	
+	<table>
+		<tr>
+			{% for key in data.0 %}
+				<th>{{ key }}</th>
+			{% endfor %}
+		</tr>
+		{% for row in data %}
+			<tr>
+				{% for value in row.values %}
+					<td>{{ value }}</td>
+				{% endfor %}
+			</tr>
+		{% endfor %}
+	</table>
+</body>
+</html>
