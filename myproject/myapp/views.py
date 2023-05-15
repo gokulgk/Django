@@ -83,12 +83,14 @@ def my_view(request):
 
 def my_view2(request):
     if request.method == 'POST':
+       
         current_datetime = datetime.now()
         now = current_datetime.strftime("%H:%M:%S")
         file = open("log.csv", 'a')
         check1 = request.POST.get('myCheckbox')
         check2 = request.POST.get('myCheckbox1')
         check3 = request.POST.get('myCheckbox2')
+        check4 = request.POST.get('hp')
         option1= request.POST.get('myComboBox')
         option2= request.POST.get('myComboBox1')
         option3= request.POST.get('myComboBox2')
@@ -96,20 +98,27 @@ def my_view2(request):
         destination= "22"
         req_type=""
         passnode=""
+        if(check4=="highp"):
+            hp="High"
+        else:
+            hp="None"
         if(str(check1)!="None"):
             req_type=str(check1)
             passnode=option1
-            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(destination)+',Raised'+',,\n')
+            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(destination)+',Raised'+',,,'+hp+'\n')
         if(str(check2)!="None"):
             req_type=str(check2)
             passnode=option2
-            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(dis_location)+',Raised'+',,\n')
+            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(dis_location)+',Raised'+',,,'+hp+'\n')
         if(str(check3)!="None"):
             req_type=str(check3)
             passnode=option3
-            file.write(','+str(now)+','+req_type+','+destination+','+str(passnode)+',Raised'+',,\n')
-
+            file.write(','+str(now)+','+req_type+','+destination+','+str(passnode)+',Raised'+',,,'+hp+'\n')
         file.close()
+        
+        if hp=="High":
+            subprocess.run(["python", "C:\\Users\\gokul\\Desktop\\web\\Django\\myproject\\priority.py"])
+
         # Do something with the name and email values
         return HttpResponse('Thanks for submitting the form!')
     else:
@@ -117,12 +126,14 @@ def my_view2(request):
     
 def my_view3(request):
     if request.method == 'POST':
+       
         current_datetime = datetime.now()
         now = current_datetime.strftime("%H:%M:%S")
         file = open("log.csv", 'a')
         check1 = request.POST.get('myCheckbox')
         check2 = request.POST.get('myCheckbox1')
         check3 = request.POST.get('myCheckbox2')
+        check4 = request.POST.get('hp')
         option1= request.POST.get('myComboBox')
         option2= request.POST.get('myComboBox1')
         option3= request.POST.get('myComboBox2')
@@ -130,20 +141,27 @@ def my_view3(request):
         destination= "32"
         req_type=""
         passnode=""
+        if(check4=="highp"):
+            hp="High"
+        else:
+            hp="None"
         if(str(check1)!="None"):
             req_type=str(check1)
             passnode=option1
-            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(destination)+',Raised'+',,\n')
+            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(destination)+',Raised'+',,,'+hp+'\n')
         if(str(check2)!="None"):
             req_type=str(check2)
             passnode=option2
-            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(dis_location)+',Raised'+',,\n')
+            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(dis_location)+',Raised'+',,,'+hp+'\n')
         if(str(check3)!="None"):
             req_type=str(check3)
             passnode=option3
-            file.write(','+str(now)+','+req_type+','+destination+','+str(passnode)+',Raised'+',,\n')
-
+            file.write(','+str(now)+','+req_type+','+destination+','+str(passnode)+',Raised'+',,,'+hp+'\n')
         file.close()
+        
+        if hp=="High":
+            subprocess.run(["python", "C:\\Users\\gokul\\Desktop\\web\\Django\\myproject\\priority.py"])
+
         # Do something with the name and email values
         return HttpResponse('Thanks for submitting the form!')
     else:
@@ -151,12 +169,14 @@ def my_view3(request):
 
 def my_view4(request):
     if request.method == 'POST':
+        
         current_datetime = datetime.now()
         now = current_datetime.strftime("%H:%M:%S")
         file = open("log.csv", 'a')
         check1 = request.POST.get('myCheckbox')
         check2 = request.POST.get('myCheckbox1')
         check3 = request.POST.get('myCheckbox2')
+        check4 = request.POST.get('hp')
         option1= request.POST.get('myComboBox')
         option2= request.POST.get('myComboBox1')
         option3= request.POST.get('myComboBox2')
@@ -164,20 +184,27 @@ def my_view4(request):
         destination= "15"
         req_type=""
         passnode=""
+        if(check4=="highp"):
+            hp="High"
+        else:
+            hp="None"
         if(str(check1)!="None"):
             req_type=str(check1)
             passnode=option1
-            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(destination)+',Raised'+',,\n')
+            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(destination)+',Raised'+',,,'+hp+'\n')
         if(str(check2)!="None"):
             req_type=str(check2)
             passnode=option2
-            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(dis_location)+',Raised'+',,\n')
+            file.write(','+str(now)+','+req_type+','+str(passnode)+','+str(dis_location)+',Raised'+',,,'+hp+'\n')
         if(str(check3)!="None"):
             req_type=str(check3)
             passnode=option3
-            file.write(','+str(now)+','+req_type+','+destination+','+str(passnode)+',Raised'+',,\n')
-
+            file.write(','+str(now)+','+req_type+','+destination+','+str(passnode)+',Raised'+',,,'+hp+'\n')
         file.close()
+        
+        if hp=="High":
+            subprocess.run(["python", "C:\\Users\\gokul\\Desktop\\web\\Django\\myproject\\priority.py"])
+
         # Do something with the name and email values
         return HttpResponse('Thanks for submitting the form!')
     else:
